@@ -7,7 +7,7 @@
     "checkJs": true,
     "jsx": "preserve",
     "incremental": true,
-    "noEmit": true,
+    "noEmit": false,
     "isolatedModules": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
