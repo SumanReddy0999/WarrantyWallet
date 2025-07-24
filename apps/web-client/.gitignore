@@ -1,0 +1,20 @@
+# Build output
+dist/
+.vite/
+.cache/
+*.tsbuildinfo
+
+# Testing
+coverage/
+*.test.tsx.snap
+jest.config.js
+
+# Local dev artifacts
+.env*
+*.log
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo

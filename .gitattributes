@@ -1,0 +1,28 @@
+# Enforce LF line endings across all text-based files
+*.ts     text eol=lf
+*.tsx    text eol=lf
+*.js     text eol=lf
+*.py     text eol=lf
+*.json   text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.sh     text eol=lf
+*.md     text eol=lf
+*.env*   text eol=lf
+*.dockerignore text eol=lf
+*.gitignore     text eol=lf
+
+# Disable line-ending normalization for binary files
+*.wav    binary
+*.mp3    binary
+*.flac   binary
+*.ttf    binary
+*.woff   binary
+*.rar    binary
+*.zip    binary
+
+# FastAPI-specific (optional)
+services/**.py text eol=lf
+
+# Vite/frontend
+apps/web-client/**.tsx text eol=lf

@@ -1,0 +1,19 @@
+# Python and model checkpoints
+__pycache__/
+*.py[cod]
+.venv/
+checkpoints/
+outputs/
+*.wav
+*.mp3
+*.flac
+
+# Runtime artifacts
+*.log
+*.tmp
+*.pid
+
+# Editor and IDE
+.idea/
+.vscode/
+.env*
