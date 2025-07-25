@@ -19,7 +19,15 @@ cd warrantywallet-test
 
 ---
 
-## 3. Start the Database (PostgreSQL)
+## 3. Create .env file in services/auth-service/ folder and paste the below content
+
+```sh
+DATABASE_URL="postgresql://postgres:warranty@localhost:5432/Warrant_wallet_v02"
+```
+
+---
+
+## 4. Start the Database (PostgreSQL)
 
 The project uses Docker Compose to run a local Postgres instance on port 5432.
 
@@ -32,7 +40,7 @@ docker-compose up -d
 
 ---
 
-## 4. Install Node.js Dependencies
+## 5. Install Node.js Dependencies
 
 From the project root:
 
@@ -44,7 +52,7 @@ pnpm install
 
 ---
 
-## 5. Push Database Schema (Drizzle ORM)
+## 6. Push Database Schema (Drizzle ORM)
 
 After starting the database and installing dependencies, push the latest schema to Postgres:
 
@@ -56,7 +64,7 @@ pnpm --filter=auth-service run db:push
 
 ---
 
-## 6. Build Shared Types
+## 7. Build Shared Types
 
 The `shared-types` package must be built before running any TypeScript services:
 
@@ -66,7 +74,7 @@ pnpm --filter shared-types run build
 
 ---
 
-## 7. (Optional) Build All Packages
+## 8. (Optional) Build All Packages
 
 If you want to ensure all TypeScript is built (not just shared-types):
 
@@ -76,7 +84,7 @@ pnpm build
 
 ---
 
-## 8. Run Services
+## 9. Run Services
 
 You can run all services in development mode using Turborepo:
 
@@ -93,7 +101,7 @@ This will:
 
 ---
 
-## 9. (If Needed) Run Services Individually
+## 10. (If Needed) Run Services Individually
 
 - **Auth Service** (port 5000):
   ```sh
@@ -115,7 +123,7 @@ This will:
   ```
 ---
 
-## 9. Access the Apps
+## 11. Access the Apps
 
 - **Web Client:** http://localhost:5173
 - **Auth Service API:** http://localhost:5000
@@ -124,7 +132,7 @@ This will:
 
 ---
 
-## 10. Troubleshooting
+## 12. Troubleshooting
 
 - If you see `Cannot find module 'shared-types/dist/index.js'`, ensure you ran the build for shared-types and that `"noEmit": false` in `tsconfig.base.json`.
 - If you get database connection errors, ensure Docker is running and the Postgres container is healthy.
@@ -132,7 +140,7 @@ This will:
 
 ---
 
-## 11. Stopping Services
+## 13. Stopping Services
 
 - To stop all Docker containers:
   ```sh
@@ -142,7 +150,7 @@ This will:
 
 ---
 
-## 12. Additional Notes
+## 14. Additional Notes
 
 - The **API Gateway** service is currently a placeholder and does not run by default.
 - You may need to create `.env` files for local secrets (see service READMEs if present).
