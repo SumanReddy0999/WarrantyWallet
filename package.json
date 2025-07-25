@@ -8,6 +8,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@types/node": "^20.19.9",
     "depcheck": "^1.4.7",
     "knip": "^5.62.0",
     "prettier": "latest",

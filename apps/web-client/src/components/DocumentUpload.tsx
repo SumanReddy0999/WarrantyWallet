@@ -1,9 +1,9 @@
 
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { FileUp, Upload, CheckCircle, FileText, Image } from 'lucide-react';
+import { FileUp, Upload, FileText, Image } from 'lucide-react';
 
 interface DocumentUploadProps {
   onUpload: (fileName: string) => void;

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ArrowUp, MessageSquare, FileText, Clock, Shield, CheckCircle } from 'lucide-react';
+import { ArrowUp, MessageSquare, FileText, Shield, CheckCircle } from 'lucide-react';
 
 interface ChatInterfaceProps {
   documents: string[];

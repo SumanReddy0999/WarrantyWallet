@@ -1,7 +1,7 @@
 
 import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Wrench, Clock, Users } from 'lucide-react';
+import { Shield, Wrench, Clock } from 'lucide-react';
 
 const Services = () => {
   return (

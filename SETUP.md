@@ -111,7 +111,7 @@ This will:
   ```sh
   cd services/ai-service
   pip install -r requirements.txt
-  pnpm run dev
+  pnpm --filter ai-service run dev
   ```
 - **Web Client** (port 5173):
   ```sh
@@ -137,6 +137,12 @@ This will:
 - If you see `Cannot find module 'shared-types/dist/index.js'`, ensure you ran the build for shared-types and that `"noEmit": false` in `tsconfig.base.json`.
 - If you get database connection errors, ensure Docker is running and the Postgres container is healthy.
 - For Python errors, ensure you have the correct Python version and all dependencies installed.
+- If you see TypeScript errors like `TS6133: 'X' is declared but its value is never read` during build, remove the unused import or variable from the file mentioned in the error message.
+- If you see a linter or TypeScript error about `process` not being found in `drizzle.config.ts`, run:
+  ```sh
+  pnpm add -Dw @types/node
+  ```
+  to install Node.js types at the workspace root.
 
 ---
 

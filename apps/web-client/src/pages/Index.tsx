@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ArrowUp, FileUp, MessageSquare, Shield, Upload, Zap } from 'lucide-react';
+import { FileUp, MessageSquare, Shield, Upload } from 'lucide-react';
 import { ChatInterface } from '@/components/ChatInterface';
 import { DocumentUpload } from '@/components/DocumentUpload';
 import { FeatureCard } from '@/components/FeatureCard';
