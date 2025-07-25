@@ -44,7 +44,19 @@ pnpm install
 
 ---
 
-## 5. Build Shared Types
+## 5. Push Database Schema (Drizzle ORM)
+
+After starting the database and installing dependencies, push the latest schema to Postgres:
+
+```sh
+pnpm --filter=auth-service run db:push
+```
+
+- This will create all necessary tables in your local Postgres instance.
+
+---
+
+## 6. Build Shared Types
 
 The `shared-types` package must be built before running any TypeScript services:
 
@@ -54,7 +66,7 @@ pnpm --filter shared-types run build
 
 ---
 
-## 6. (Optional) Build All Packages
+## 7. (Optional) Build All Packages
 
 If you want to ensure all TypeScript is built (not just shared-types):
 
@@ -64,7 +76,7 @@ pnpm build
 
 ---
 
-## 7. Run Services
+## 8. Run Services
 
 You can run all services in development mode using Turborepo:
 
@@ -81,7 +93,7 @@ This will:
 
 ---
 
-## 8. (If Needed) Run Services Individually
+## 9. (If Needed) Run Services Individually
 
 - **Auth Service** (port 5000):
   ```sh
@@ -97,7 +109,10 @@ This will:
   ```sh
   pnpm --filter web-client run dev
   ```
-
+  from root folder to run only ai-service run this command.
+  ```sh
+  pnpm --filter ai-service run dev
+  ```
 ---
 
 ## 9. Access the Apps

@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:15
-    container_name: warranty_wallet_db_testnet
+    container_name: warranty_wallet_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: warranty
