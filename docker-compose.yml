@@ -1,6 +1,7 @@
 services:
   postgres:
-    image: postgres:15
+    # Use the official pgvector image, specifying the Postgres 15 tag
+    image: pgvector/pgvector:pg15
     container_name: warranty_wallet_db
     environment:
       POSTGRES_USER: postgres
