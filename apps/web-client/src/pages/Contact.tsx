@@ -32,9 +32,9 @@ const Contact = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  123 Warranty Street<br />
-                  Tech City, TC 12345<br />
-                  United States
+                  Hyderabad<br />
+                  Telangana State<br />
+                  India
                 </p>
               </CardContent>
             </Card>
@@ -47,7 +47,7 @@ const Contact = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">+1 (555) 123-4567</p>
+                <p className="text-gray-600">+91-7816058298</p>
               </CardContent>
             </Card>
 

@@ -10,6 +10,7 @@ import Services from "./pages/Services";
 import FAQs from "./pages/FAQs";
 import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
+import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -27,6 +28,7 @@ const App = () => (
         <Route path="/services" element={<Services />} />
         <Route path="/faqs" element={<FAQs />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/coming-soon" element={<ComingSoon />} />
         <Route 
           path="/dashboard" 
           element={

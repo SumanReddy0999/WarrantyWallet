@@ -1,9 +1,16 @@
 
 import { Navigation } from '@/components/Navigation';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Wrench, Clock } from 'lucide-react';
+import { Shield, Wrench, Clock, BrainCircuit, FileUp, MessageSquareDot} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Services = () => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate('/coming-soon');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <Navigation />
@@ -17,19 +24,25 @@ const Services = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+          <Card 
+            className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            onClick={handleCardClick}
+          >
             <CardHeader>
-              <Shield className="h-12 w-12 text-blue-600 mb-4" />
-              <CardTitle>Warranty Protection</CardTitle>
+              <MessageSquareDot className="h-12 w-12 text-orange-600 mb-4" />
+              <CardTitle>Smart Recommendations</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
-                Comprehensive warranty coverage for all your valuable items and appliances.
+              Make smarter decisions with our intelligent suggestions on whether to repair or replace an item. We also provide timely advice on purchasing extended warranties for your most valuable products..
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+          <Card 
+            className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            onClick={handleCardClick}
+          >
             <CardHeader>
               <Wrench className="h-12 w-12 text-purple-600 mb-4" />
               <CardTitle>Repair Services</CardTitle>
@@ -41,7 +54,10 @@ const Services = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+          <Card 
+            className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            onClick={handleCardClick}
+          >
             <CardHeader>
               <Clock className="h-12 w-12 text-green-600 mb-4" />
               <CardTitle>24/7 Support</CardTitle>
@@ -49,6 +65,48 @@ const Services = () => {
             <CardContent>
               <p className="text-gray-600">
                 Round-the-clock customer support for all your warranty-related queries.
+              </p>
+            </CardContent>
+          </Card>
+          <Card 
+            className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            onClick={handleCardClick}
+          >
+            <CardHeader>
+              <FileUp className="h-12 w-12 text-yellow-600 mb-4" />
+              <CardTitle>Bulk Upload</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600">
+              Effortlessly register all your products at once. Our bulk upload feature allows you to import details for multiple items from a single file, saving you valuable time.
+              </p>
+            </CardContent>
+          </Card>
+          <Card 
+            className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            onClick={handleCardClick}
+          >
+            <CardHeader>
+              <BrainCircuit className="h-12 w-12 text-red-600 mb-4" />
+              <CardTitle>AI-Powered Management</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600">
+              Let our AI do the work by simply scanning your receipts. It automatically extracts and organizes key details like purchase dates and warranty periods for you
+              </p>
+            </CardContent>
+          </Card>
+          <Card 
+            className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            onClick={handleCardClick}
+          >
+            <CardHeader>
+              <Shield className="h-12 w-12 text-blue-600 mb-4" />
+              <CardTitle>Digital Vault</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600">
+              Keep all your important documents in one secure and accessible digital vault. Upload receipts, warranty cards, and invoices to ensure you have them right when you need them.
               </p>
             </CardContent>
           </Card>
