@@ -53,23 +53,13 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
    ```
    ---
 
-7. **(Optional) Build All Packages**
 
-   If you want to ensure all TypeScript is built (not just shared-types):
-
-   ```sh
-   pnpm build
-   ```
-
----
-
-
-8. **Start Development Servers**
+7. **Start Development Servers**
    ```sh
    pnpm run dev
    ```
 
-9. (If Needed) Run Services Individually
+8. (If Needed) Run Services Individually
 
 - **Auth Service** (port 5000):
   ```sh
