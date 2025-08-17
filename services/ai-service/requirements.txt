@@ -1,2 +1,29 @@
+# FastAPI Web Framework
 fastapi
 uvicorn[standard]
+python-multipart
+fastapi-cors
+
+# Database (PostgreSQL + pgvector)
+sqlalchemy
+psycopg2-binary
+pgvector
+
+# LangChain & Google Generative AI
+langchain
+langchain-core
+langchain-google-genai
+langchain-community
+langchain-text-splitters
+google-generativeai
+
+# Configuration & Utilities
+python-dotenv
+pydantic
+python-dateutil
+
+# Document Processing (PDFs and Images)
+unstructured[local-inference]
+pypdf
+pdf2image
+pikepdf

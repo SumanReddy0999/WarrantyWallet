@@ -12,7 +12,11 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
 - **Python** (v3.10+ recommended, for ai-service)
 - **Docker** (for running PostgreSQL)
 - **Git**
+- **Tesseract-OCR** : Required for local OCR capabilities in the AI service. Install guide. Make sure to add it
+    to your system's PATH during installation.
 
+- **Poppler**: A PDF rendering library required by the AI service for processing PDF files. Download for Windows.  
+    For macOS/Linux, use Homebrew (brew install poppler) or your package manager.
 ### Setup Steps
 
 1. **Clone the Repository**
@@ -41,19 +45,60 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
    ```
    ---
 
-5. **Initialize Database**
+5. **AI Service:** Create a file at services/ai-service/.env with your AI and database credentials. Update the 
+   POPPLER_PATH and TESSERACT_PATH with the absolute paths to your local installations.
+   ```
+   # --- Generative AI Configuration ---
+   GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
+
+   # --- Database Configuration ---
+   DATABASE_URL="postgresql://postgres:warranty@localhost:5432/Warrant_wallet_v02"
+
+   # --- External Local Dependencies ---
+   # Example for Windows: POPPLER_PATH="C:\\path\\to\\poppler-24.02.0\\Library\\bin"
+   POPPLER_PATH="YOUR_ABSOLUTE_PATH_TO_POPPLER_BIN"
+
+   # Example for Windows: TESSERACT_PATH="C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+   TESSERACT_PATH="YOUR_ABSOLUTE_PATH_TO_TESSERACT_EXE"
+   ```
+   ---
+
+6. **Set Up AI Service Python Environment**
+   Create a virtual environment and install the required Python packages.
+
+   ```
+   # Navigate to the ai-service directory
+   cd services/ai-service
+
+   # Create a virtual environment
+   python -m venv venv
+
+   # Activate the virtual environment
+   # On Windows:
+   .\venv\Scripts\activate
+   # On macOS/Linux:
+   source venv/bin/activate
+
+   # Install Python dependencies
+   pip install -r requirements.txt
+
+   # Navigate back to the root directory
+   cd ../..
+   ```
+
+7. **Initialize Database**
    ```sh
    pnpm --filter=auth-service run db:push
    ```
    ---
 
-6. **Build Shared Packages**
+8. **Build Shared Packages**
    ```sh
    pnpm --filter shared-types run build
    ```
    ---
 
-7. **(Optional) Build All Packages**
+9. **(Optional) Build All Packages**
 
    If you want to ensure all TypeScript is built (not just shared-types):
 
@@ -64,12 +109,12 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
 ---
 
 
-8. **Start Development Servers**
+10. **Start Development Servers**
    ```sh
    pnpm run dev
    ```
 
-9. (If Needed) Run Services Individually
+11. (If Needed) Run Services Individually
 
 - **Auth Service** (port 5000):
   ```sh
@@ -123,10 +168,13 @@ WarrantyWallet/
 - **Port:** 5173
 - **Features:** Protected routes, service pages, toast notifications
 
-### � AI Service
-- **Stack:** Python FastAPI
+### 🤖 AI RAG Service
+- **Stack:** Python, FastAPI, LangChain
 - **Location:** services/ai-service
 - **Port:** 8000
+- **Description:** Processes uploaded warranty documents (PDFs, images) using a hybrid local OCR and LLM-vision 
+    approach. It extracts, validates, and categorizes warranty data, then populates the relational and vector database to be used by a RAG chatbot.
+- **Key Dependencies:** Tesseract, Poppler, Google Generative AI
 
 ## 🛠️ Development Tools
 - ESLint, Prettier for code formatting
