@@ -1,9 +1,9 @@
-import { pgTable, uuid, text, timestamp, date, jsonb, serial, bigserial, integer, vector } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, timestamp, date, jsonb, bigserial, vector } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
 
-// --- Users table (No changes) ---
+// --- Users table ---
 export const users = pgTable("users", {
     id: uuid("id").primaryKey().defaultRandom(),
     fullName: text("full_name"),
@@ -15,21 +15,21 @@ export const users = pgTable("users", {
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// --- Categories table (No changes) ---
+// --- Categories table ---
 export const categories = pgTable("categories", {
-    id: serial("id").primaryKey(),
+    id: uuid("id").primaryKey().defaultRandom(),
     name: text("name").unique().notNull(),
 });
 
-// --- NEW: Manufacturers table ---
+// --- Manufacturers table ---
 export const manufacturers = pgTable("manufacturers", {
     id: uuid("id").primaryKey().defaultRandom(),
     name: text("name").notNull().unique(),
-    contactInfo: jsonb("contact_info"), // Store phone, email, website etc.
+    contactInfo: jsonb("contact_info"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// --- NEW: Products table ---
+// --- Products table ---
 export const products = pgTable("products", {
     id: uuid("id").primaryKey().defaultRandom(),
     manufacturerId: uuid("manufacturer_id").references(() => manufacturers.id, { onDelete: "cascade" }).notNull(),
@@ -38,18 +38,16 @@ export const products = pgTable("products", {
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// --- UPDATED: Warranties table ---
+// --- Warranties table ---
 export const warranties = pgTable("warranties", {
     id: uuid("id").primaryKey().defaultRandom(),
     userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
-    categoryId: integer("category_id").references(() => categories.id),
-    // NEW: Link to the products table
+    categoryId: uuid("category_id").references(() => categories.id),
     productId: uuid("product_id").references(() => products.id, { onDelete: "set null" }),
     originalFilename: text("original_filename").notNull(),
     storagePath: text("storage_path").notNull(),
     fileMimeType: text("file_mime_type"),
     uploadStatus: text("upload_status").default('processing').notNull(),
-    // REMOVED: productName and modelNumber are now in the products table
     serialNumber: text("serial_number"),
     warrantyNumber: text("warranty_number"),
     purchaseDate: date("purchase_date"),
@@ -59,20 +57,17 @@ export const warranties = pgTable("warranties", {
     uploadedAt: timestamp("uploaded_at").defaultNow().notNull(),
 });
 
-
-// --- UPDATED: Document Chunks table ---
+// --- Document Chunks table ---
 export const documentChunks = pgTable("document_chunks", {
     id: uuid("id").primaryKey().defaultRandom(),
     warrantyId: uuid("warranty_id").references(() => warranties.id, { onDelete: "cascade" }).notNull(),
     chunkText: text("chunk_text").notNull(),
-    // NEW: Vector column for pgvector embeddings. Dimension matches our Python config.
     vector: vector("vector", { dimensions: 768 }),
     metadata: jsonb("metadata"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-
-// --- Chat Sessions & Messages (No changes) ---
+// --- Chat Sessions & Messages ---
 export const chatSessions = pgTable("chat_sessions", {
     id: uuid("id").primaryKey().defaultRandom(),
     userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
@@ -88,7 +83,7 @@ export const chatMessages = pgTable("chat_messages", {
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// --- Notifications (No changes) ---
+// --- Notifications ---
 export const notifications = pgTable("notifications", {
     id: uuid("id").primaryKey().defaultRandom(),
     userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
@@ -99,11 +94,8 @@ export const notifications = pgTable("notifications", {
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-
-// --- NEW AND UPDATED: Table Relations ---
-// This section tells Drizzle how the tables are connected.
-
-export const manufacturerRelations = relations(manufacturers, ({ one, many }) => ({
+// --- Table Relations ---
+export const manufacturerRelations = relations(manufacturers, ({ many }) => ({
     products: many(products),
 }));
 
@@ -142,4 +134,3 @@ export const userRelations = relations(users, ({ many }) => ({
 // --- Zod Schemas and Types ---
 export const insertUserSchema = createInsertSchema(users);
 export type User = typeof users.$inferSelect;
-// Add other schemas and types as needed

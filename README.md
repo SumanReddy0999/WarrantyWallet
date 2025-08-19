@@ -35,7 +35,7 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
 
 3. **Start Database**
    ```sh
-   docker-compose up -d
+   docker compose up -d
    ```
    ---
 

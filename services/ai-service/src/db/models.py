@@ -20,7 +20,7 @@ Base = declarative_base()
 
 class Category(Base):
     __tablename__ = 'categories'
-    id = Column(Integer, Identity(start=1, cycle=False), primary_key=True)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     name = Column(String, nullable=False, unique=True)
 
 class Manufacturer(Base):
@@ -42,7 +42,7 @@ class Warranty(Base):
     __tablename__ = 'warranties'
     id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     user_id = Column("user_id", Uuid, nullable=False, index=True)
-    category_id = Column("category_id", Integer, ForeignKey('categories.id'), index=True)
+    category_id = Column("category_id", Uuid, ForeignKey('categories.id'), index=True)
     product_id = Column("product_id", Uuid, ForeignKey('products.id', ondelete="SET NULL"))
     original_filename = Column("original_filename", String, nullable=False)
     storage_path = Column("storage_path", String, nullable=False)
