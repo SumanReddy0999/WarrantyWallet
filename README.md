@@ -39,13 +39,25 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
    ```
    ---
 
-4. **Install Dependencies**
+4. **Vector Extension** Open query tool for the database in pgadmin4 and run the command
+   ```sh
+   CREATE EXTENSION vector;
+
+   ---
+
+5. **Initialize Database**
+   ```sh
+   pnpm --filter=auth-service run db:push
+   ```
+   ---
+
+6. **Install Dependencies**
    ```sh
    pnpm install
    ```
    ---
 
-5. **AI Service:** Create a file at services/ai-service/.env with your AI and database credentials. Update the 
+7. **AI Service:** Create a file at services/ai-service/.env with your AI and database credentials. Update the 
    POPPLER_PATH and TESSERACT_PATH with the absolute paths to your local installations.
    ```
    # --- Generative AI Configuration ---
@@ -63,7 +75,7 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
    ```
    ---
 
-6. **Set Up AI Service Python Environment**
+8. **Set Up AI Service Python Environment**
    Create a virtual environment and install the required Python packages.
 
    ```
@@ -85,29 +97,13 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
    # Navigate back to the root directory
    cd ../..
    ```
-
-7. **Initialize Database**
-   ```sh
-   pnpm --filter=auth-service run db:push
-   ```
    ---
 
-8. **Build Shared Packages**
+9. **Build Shared Packages**
    ```sh
    pnpm --filter shared-types run build
    ```
    ---
-
-9. **(Optional) Build All Packages**
-
-   If you want to ensure all TypeScript is built (not just shared-types):
-
-   ```sh
-   pnpm build
-   ```
-
----
-
 
 10. **Start Development Servers**
    ```sh
