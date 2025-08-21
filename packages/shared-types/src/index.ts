@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp, date, jsonb, bigserial, vector } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, timestamp, date, jsonb, bigserial, bigint, vector } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
@@ -76,7 +76,7 @@ export const chatSessions = pgTable("chat_sessions", {
 });
 
 export const chatMessages = pgTable("chat_messages", {
-    id: bigserial("id", { mode: "number" }).primaryKey(),
+    id: uuid("id").primaryKey().defaultRandom(),
     sessionId: uuid("session_id").references(() => chatSessions.id, { onDelete: "cascade" }).notNull(),
     senderType: text("sender_type").notNull(),
     content: text("content").notNull(),
