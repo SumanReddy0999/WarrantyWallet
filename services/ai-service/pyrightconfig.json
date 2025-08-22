@@ -1,0 +1,15 @@
+{
+  "include": ["src"],
+  "exclude": ["venv", "temp_uploads", "__pycache__"],
+  "pythonVersion": "3.13",
+  "pythonPlatform": "Windows",
+  "venvPath": ".",
+  "venv": "venv",
+  "extraPaths": [
+    "src",
+    "../shared-types/src"
+  ],
+  "typeCheckingMode": "basic",
+  "autoImportCompletions": true,
+  "useLibraryCodeForTypes": true
+}

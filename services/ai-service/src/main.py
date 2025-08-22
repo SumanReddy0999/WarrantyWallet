@@ -13,16 +13,16 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Keep your existing CORS configuration
+# CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"], # Allows your frontend to connect
+    allow_origins=["http://localhost:5173"], # Allows frontend to connect
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include the router from our RAG pipeline
+# Include the router 
 app.include_router(ai_router, prefix="/api/ai", tags=["AI Ingestion"])
 
 # Root endpoint for health checks
