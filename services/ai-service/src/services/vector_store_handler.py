@@ -5,7 +5,9 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from ..core import config
 from ..schemas.warranty import WarrantyData
+from langsmith import traceable
 
+@traceable(name="chunking_and_embedding")
 def create_chunks_and_embeddings(
     raw_text: str,
     metadata: WarrantyData

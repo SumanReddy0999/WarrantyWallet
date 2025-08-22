@@ -9,12 +9,13 @@ sqlalchemy
 psycopg2-binary
 pgvector
 
-# LangChain & Google Generative AI
+# LangChain & Google Generative AI & LangSmith
 langchain
 langchain-core
 langchain-google-genai
 langchain-community
 langchain-text-splitters
+langsmith
 google-generativeai
 
 # Configuration & Utilities
@@ -27,3 +28,4 @@ unstructured[local-inference]
 pypdf
 pdf2image
 pikepdf
+pymupdf

@@ -3,7 +3,9 @@ from dateutil.parser import parse, ParserError
 from dateutil.relativedelta import relativedelta
 import re
 from ..schemas.warranty import WarrantyData
+from langsmith import traceable
 
+@traceable(name="expiry_date_calculation")
 def _calculate_expiry_from_period(purchase_date: date, warranty_period: str) -> date | None:
     """Calculates expiry date from purchase date and a warranty period string."""
     try:
@@ -25,6 +27,7 @@ def _calculate_expiry_from_period(purchase_date: date, warranty_period: str) -> 
     except (ValueError, TypeError):
         return None
 
+@traceable(name="warranty_data_validation")
 def process_and_validate_warranty_data(data: WarrantyData) -> WarrantyData:
     """
     Validates the extracted data and calculates missing date fields.

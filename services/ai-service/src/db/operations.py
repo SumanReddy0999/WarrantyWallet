@@ -4,26 +4,58 @@ from typing import List, Dict, Any
 
 from . import models
 from ..schemas.warranty import WarrantyData
+from langsmith import traceable
 
+@traceable(name="Database Operations")
+def persist_warranty_data(
+    db: Session,
+    user_uuid: uuid.UUID,
+    processed_data: WarrantyData,
+    chunks_with_vectors: List[Dict[str, Any]],
+    file_info: Dict[str, str]
+) -> models.Warranty:
+    """
+    Orchestrates all database transactions for a new warranty.
+    This serves as the parent run for all individual DB operations in LangSmith.
+    """
+    manufacturer = get_or_create_manufacturer(db, name=processed_data.manufacturer, contact_info=processed_data.contact_info)
+    product = get_or_create_product(db, name=processed_data.product_name, model_number=processed_data.model_number, manufacturer_id=manufacturer.id)
+    category = get_or_create_category(db, name=processed_data.category)
+    
+    warranty = create_warranty_record(
+        db, user_id=user_uuid, product_id=product.id,
+        category_id=category.id,
+        data=processed_data, filename=file_info['filename'],
+        storage_path=file_info['storage_path'], mime_type=file_info['mime_type']
+    )
+
+    if chunks_with_vectors:
+        add_document_chunks(db, warranty_id=warranty.id, chunks=chunks_with_vectors)
+
+    update_warranty_status(db, warranty_id=warranty.id, status='completed')
+    
+    return warranty
+
+# --- Individual DB functions (now child runs) ---
+
+@traceable(name = "category" )
 def get_or_create_category(db: Session, name: str) -> models.Category:
-    """Retrieves a category by name or creates it if it doesn't exist."""
+    # ... (function content remains the same)
     if not name or not name.strip():
         name = "Other"
-        
     category = db.query(models.Category).filter(models.Category.name == name).first()
     if not category:
-        print(f"INFO: Category '{name}' not found. Creating new record.")
         category = models.Category(name=name)
         db.add(category)
         db.commit()
         db.refresh(category)
     return category
 
+@traceable(name="manufacturer")
 def get_or_create_manufacturer(db: Session, name: str, contact_info: str | None) -> models.Manufacturer:
-    """Retrieves a manufacturer by name or creates it if it doesn't exist."""
+    # ... (function content remains the same)
     manufacturer = db.query(models.Manufacturer).filter(models.Manufacturer.name == name).first()
     if not manufacturer:
-        print(f"INFO: Manufacturer '{name}' not found. Creating new record.")
         manufacturer = models.Manufacturer(
             name=name,
             contact_info={"details": contact_info} if contact_info else {}
@@ -33,15 +65,15 @@ def get_or_create_manufacturer(db: Session, name: str, contact_info: str | None)
         db.refresh(manufacturer)
     return manufacturer
 
+@traceable(name="product")
 def get_or_create_product(db: Session, name: str, model_number: str | None, manufacturer_id: uuid.UUID) -> models.Product:
-    """Retrieves a product by its details or creates it if it doesn't exist."""
+    # ... (function content remains the same)
     product = db.query(models.Product).filter_by(
         name=name,
         model_number=model_number,
         manufacturer_id=manufacturer_id
     ).first()
     if not product:
-        print(f"INFO: Product '{name}' not found. Creating new record.")
         product = models.Product(
             name=name,
             model_number=model_number,
@@ -52,18 +84,18 @@ def get_or_create_product(db: Session, name: str, model_number: str | None, manu
         db.refresh(product)
     return product
 
+@traceable(name="warranty")
 def create_warranty_record(
     db: Session,
     user_id: uuid.UUID,
     product_id: uuid.UUID,
-    category_id: int | None,
+    category_id: uuid.UUID | None,
     data: WarrantyData,
     filename: str,
     storage_path: str,
     mime_type: str | None
 ) -> models.Warranty:
-    """Creates a new warranty record in the database."""
-    print("INFO: Creating new warranty record in the database.")
+    # ... (function content remains the same)
     warranty = models.Warranty(
         user_id=user_id,
         product_id=product_id,
@@ -83,9 +115,9 @@ def create_warranty_record(
     db.refresh(warranty)
     return warranty
 
+@traceable(name="document_chunks")
 def add_document_chunks(db: Session, warranty_id: uuid.UUID, chunks: List[Dict[str, Any]]):
-    """Bulk inserts document chunks into the database for a given warranty."""
-    print(f"INFO: Bulk inserting {len(chunks)} document chunks into the database.")
+    # ... (function content remains the same)
     db_chunks = [
         models.DocumentChunk(
             warranty_id=warranty_id,
@@ -96,15 +128,13 @@ def add_document_chunks(db: Session, warranty_id: uuid.UUID, chunks: List[Dict[s
     ]
     db.bulk_save_objects(db_chunks)
     db.commit()
-    print("SUCCESS: Document chunks inserted.")
 
+@traceable(name="warranty_status")
 def update_warranty_status(db: Session, warranty_id: uuid.UUID, status: str) -> models.Warranty:
-    """Updates the status of a warranty record."""
+    # ... (function content remains the same)
     warranty = db.query(models.Warranty).filter(models.Warranty.id == warranty_id).first()
     if warranty:
-        print(f"INFO: Updating warranty {warranty_id} status to '{status}'.")
         warranty.upload_status = status
         db.commit()
         db.refresh(warranty)
-        return warranty
-    return None
+    return warranty

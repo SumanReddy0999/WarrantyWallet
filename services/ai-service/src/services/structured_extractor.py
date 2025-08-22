@@ -13,7 +13,9 @@ from langchain_core.messages import HumanMessage
 from ..core import config
 from ..schemas.warranty import WarrantyData
 from ..services.document_loader import load_text_from_document
+from langsmith import traceable
 
+@traceable(name="llm_initialization")
 def _get_llm(temperature: float = 0.1) -> ChatGoogleGenerativeAI:
     """Initializes the ChatGoogleGenerativeAI model."""
     return ChatGoogleGenerativeAI(
@@ -23,6 +25,7 @@ def _get_llm(temperature: float = 0.1) -> ChatGoogleGenerativeAI:
         convert_system_message_to_human=True
     )
 
+@traceable(name="vision_fallback")
 def _get_text_from_vision_fallback(file_path: Path) -> List[str]:
     """
     Fallback function to extract text using the vision model.
@@ -71,7 +74,7 @@ def _get_text_from_vision_fallback(file_path: Path) -> List[str]:
     full_text = response.content
     return [page.strip() for page in full_text.split('--- PAGE BREAK ---') if page.strip()]
 
-
+@traceable(name="data_extraction")
 def extract_data(file_path: str) -> Tuple[WarrantyData, str]:
     """
     Orchestrates the data extraction process.
