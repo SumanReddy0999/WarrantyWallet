@@ -1,0 +1,24 @@
+{
+  "python.defaultInterpreterPath": "./services/ai-service/venv/Scripts/python.exe",
+  "python.terminal.activateEnvironment": true,
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "python.analysis.extraPaths": [
+    "./services/ai-service/src",
+    "./packages/shared-types/src"
+  ],
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "files.associations": {
+    "*.py": "python",
+    "*.ts": "typescript",
+    "*.tsx": "typescriptreact",
+    "*.js": "javascript",
+    "*.jsx": "javascriptreact"
+  },
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.suggest.autoImports": true,
+  "emmet.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  }
+}

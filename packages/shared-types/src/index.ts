@@ -58,14 +58,14 @@ export const warranties = pgTable("warranties", {
 });
 
 // --- Document Chunks table ---
-export const documentChunks = pgTable("document_chunks", {
+/*export const documentChunks = pgTable("document_chunks", {
     id: uuid("id").primaryKey().defaultRandom(),
     warrantyId: uuid("warranty_id").references(() => warranties.id, { onDelete: "cascade" }).notNull(),
     chunkText: text("chunk_text").notNull(),
     vector: vector("vector", { dimensions: 768 }),
     metadata: jsonb("metadata"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+});*/
 
 // --- Chat Sessions & Messages ---
 export const chatSessions = pgTable("chat_sessions", {
@@ -120,7 +120,7 @@ export const warrantyRelations = relations(warranties, ({ one, many }) => ({
         fields: [warranties.categoryId],
         references: [categories.id],
     }),
-    documentChunks: many(documentChunks),
+    //documentChunks: many(documentChunks),
     chatSessions: many(chatSessions),
     notifications: many(notifications),
 }));

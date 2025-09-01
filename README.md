@@ -9,12 +9,13 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
 
 - **Node.js** (v18+ recommended)
 - **pnpm** (v8+ recommended): [Install guide](https://pnpm.io/installation)
-- **Python** (v3.10+ recommended, for ai-service)
+- **Python** (v3.11+ recommended, for ai-service)
+  - The project uses Python 3.13.5 (specified in `.python-version`)
+  - Virtual environment is configured in `services/ai-service/venv/`
 - **Docker** (for running PostgreSQL)
 - **Git**
-- **Tesseract-OCR** : Required for local OCR capabilities in the AI service. Install guide. Make sure to add it
+- **Tesseract-OCR**: Required for local OCR capabilities in the AI service. Install guide. Make sure to add it
     to your system's PATH during installation.
-
 - **Poppler**: A PDF rendering library required by the AI service for processing PDF files. Download for Windows.  
     For macOS/Linux, use Homebrew (brew install poppler) or your package manager.
 ### Setup Steps
@@ -57,7 +58,30 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
    ```
    ---
 
-7. **AI Service:** Create a file at services/ai-service/.env with your AI and database credentials. Update the 
+7. **Verify External Dependencies** Run these commands from your terminal to ensure Tesseract and Poppler are correctly installed and accessible.
+
+Verify Tesseract:
+
+```
+
+tesseract --version
+```
+✅ Success: You'll see a version number (e.g., tesseract 5.3.3).
+
+❌ Failure: You'll see an error like 'tesseract' is not recognized.... If this happens, you must add your Tesseract installation folder to your system's PATH environment variable.
+
+Verify Poppler:
+
+```
+
+# The 'pdftoppm' command is part of the Poppler suite
+pdftoppm -v
+```
+✅ Success: You'll see version information (e.g., pdftoppm version 24.02.0).
+
+❌ Failure: You'll see a command not found error. If this happens, add the bin folder of your Poppler installation to your system's PATH.
+
+8. **AI Service:** Create a file at services/ai-service/.env with your AI and database credentials. Update the 
    POPPLER_PATH and TESSERACT_PATH with the absolute paths to your local installations.
    ```
    # --- Generative AI Configuration ---
@@ -75,7 +99,7 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
    ```
    ---
 
-8. **Set Up AI Service Python Environment**
+9. **Set Up AI Service Python Environment**
    Create a virtual environment and install the required Python packages.
 
    ```
@@ -97,20 +121,22 @@ WarrantyWallet is a full-stack monorepo designed for managing product warranties
    # Navigate back to the root directory
    cd ../..
    ```
+
+   **IDE Configuration**: The project includes VS Code/Cursor configuration files (`.vscode/settings.json`, `.vscode/launch.json`) that automatically configure the Python interpreter to use the AI service virtual environment. This ensures proper IntelliSense and debugging capabilities.
    ---
 
-9. **Build Shared Packages**
+10. **Build Shared Packages**
    ```sh
    pnpm --filter shared-types run build
    ```
    ---
 
-10. **Start Development Servers**
+11. **Start Development Servers**
    ```sh
    pnpm run dev
    ```
 
-11. (If Needed) Run Services Individually
+12. (If Needed) Run Services Individually
 
 - **Auth Service** (port 5000):
   ```sh
@@ -168,8 +194,9 @@ WarrantyWallet/
 - **Stack:** Python, FastAPI, LangChain
 - **Location:** services/ai-service
 - **Port:** 8000
-- **Description:** Processes uploaded warranty documents (PDFs, images) using a hybrid local OCR and LLM-vision 
-    approach. It extracts, validates, and categorizes warranty data, then populates the relational and vector database to be used by a RAG chatbot.
+- **Description:** Provides two main functionalities:
+ 1) A RAG ingestion pipeline that processes uploaded documents and populates a vector store. 
+ 2) A RAG chat pipeline that answers questions based on the ingested documents.
 - **Key Dependencies:** Tesseract, Poppler, Google Generative AI
 
 ## 🛠️ Development Tools
@@ -178,12 +205,15 @@ WarrantyWallet/
 - Jest for testing
 - Git hooks via Husky (optional)
 - Platform consistency via .gitattributes and scoped .gitignore
+- **Python Development**: Pyright for type checking, configured in `services/ai-service/pyrightconfig.json`
+- **IDE Configuration**: VS Code/Cursor settings for seamless Python and TypeScript development
 
 ## ⚠️ Troubleshooting
 
-- **Module not found:** If you see `Cannot find module 'shared-types/dist/index.js'`, rebuild shared-types
-- **Database errors:** Ensure Docker is running and Postgres container is healthy
-- **Python errors:** Verify correct Python version and dependencies
+- **Module not found:** If you see Cannot find module 'shared-types/dist/index.js', run pnpm --filter shared-types run build.
+- **Database errors:** Ensure your Docker container is running and that you have run the db:push command.
+-**AI-service errors:** If you encounter errors related to Tesseract or Poppler, double-check that they are installed and that their paths are correctly set in both your System PATH and the ai-service/.env file. Run the verification commands from Step 5 of the setup guide to confirm.
+- **Python import errors in VS Code:** Ensure your IDE is using the correct Python interpreter from services/ai-service/venv/.
 - **TypeScript errors:** Check for unused imports or missing types
 - **Node.js types:** If process is not found in drizzle.config.ts, run:
   ```sh

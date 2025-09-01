@@ -56,6 +56,7 @@ class Warranty(Base):
     additional_metadata = Column("additional_metadata", JSON)
     uploaded_at = Column("uploaded_at", DateTime, server_default=func.now(), nullable=False)
 
+'''
 class DocumentChunk(Base):
     __tablename__ = 'document_chunks'
     id = Column(Uuid, primary_key=True, default=uuid.uuid4)
@@ -64,3 +65,4 @@ class DocumentChunk(Base):
     vector = Column(Vector(EMBEDDING_DIMENSION))
     chunk_metadata = Column("metadata", JSON)
     created_at = Column("created_at", DateTime, server_default=func.now(), nullable=False)
+    '''

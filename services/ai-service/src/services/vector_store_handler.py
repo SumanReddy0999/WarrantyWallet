@@ -2,7 +2,7 @@ from typing import List, Dict, Any
 from langchain.docstore.document import Document
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-
+import uuid
 from ..core import config
 from ..schemas.warranty import WarrantyData
 from langsmith import traceable
@@ -10,7 +10,8 @@ from langsmith import traceable
 @traceable(name="chunking_and_embedding")
 def create_chunks_and_embeddings(
     raw_text: str,
-    metadata: WarrantyData
+    metadata: WarrantyData,
+    warranty_id: uuid.UUID
 ) -> List[Dict[str, Any]]:
     """
     Splits raw text into chunks and creates a vector embedding for each chunk.
@@ -69,7 +70,7 @@ def create_chunks_and_embeddings(
 
     for i, chunk in enumerate(chunks):
         # Combine the document-level structured metadata with any chunk-specific metadata
-        combined_metadata = {**structured_metadata_dict, **chunk.metadata}
+        combined_metadata = {"warranty_id": str(warranty_id),**structured_metadata_dict, **chunk.metadata}
         chunks_with_vectors.append({
             "text": chunk.page_content,
             "vector": chunk_embeddings[i],

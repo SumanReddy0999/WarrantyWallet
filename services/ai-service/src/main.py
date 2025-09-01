@@ -1,31 +1,32 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .api.endpoints import router as ai_router 
-from .db.database import engine               
-from .db import models                        
+# Import both routers
+from .api.ingestion_router import router as ingestion_router
+from .api.chat_router import router as chat_router
+from .db.database import engine
+from .db import models
 
-# This command ensures all tables are created if they don't exist.
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="Warranty RAG Ingestion Pipeline",
-    description="Service for processing, extracting, and embedding warranty documents.",
-    version="1.0.0"
+    title="Warranty Wallet AI Service",
+    description="Service for warranty document ingestion and RAG-based chat.",
+    version="2.0.0"
 )
 
-# CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"], # Allows frontend to connect
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Include the router 
-app.include_router(ai_router, prefix="/api/ai", tags=["AI Ingestion"])
+# Include both routers with distinct tags
+app.include_router(ingestion_router, prefix="/api/ai", tags=["Ingestion"])
+app.include_router(chat_router, prefix="/api/ai", tags=["Chat"])
 
-# Root endpoint for health checks
-@app.get("/")
+@app.get("/", tags=["Root"])
 def read_root():
+    """A simple health check endpoint."""
     return {"message": "AI Service is running"}

@@ -9,7 +9,10 @@ from ..schemas.warranty import WarrantyData
 from .structured_extractor import extract_data
 from .vector_store_handler import create_chunks_and_embeddings
 from .warranty_logic import process_and_validate_warranty_data
-from ..core.config import TEMP_UPLOAD_DIR
+from langchain_postgres.vectorstores import PGVector
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain.docstore.document import Document
+from ..core.config import TEMP_UPLOAD_DIR, EMBEDDING_MODEL_NAME, GEMINI_API_KEY, DATABASE_URL
 from langsmith import traceable
 
 @traceable(name="Full Ingestion Pipeline")
@@ -28,28 +31,44 @@ def run_ingestion_pipeline(
         with open(temp_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
-        # Step 1: Data Extraction and Processing
+        # Step 1: Data Extraction and Validation
         extracted_data, raw_text = extract_data(temp_path)
         processed_data = process_and_validate_warranty_data(extracted_data)
         
-        # Step 2: Chunking and Embedding
-        chunks_with_vectors = create_chunks_and_embeddings(raw_text, processed_data)
-
-        # Step 3: All Database Operations
+        # Step 2: Initial Database Setup
         file_info = {
             "filename": file.filename,
             "storage_path": temp_path,
             "mime_type": file.content_type
         }
         user_uuid = uuid.UUID(user_id)
-        
-        # This single call will create the "Database Operations" parent run
-        warranty = db_ops.persist_warranty_data(
+        warranty = db_ops.setup_initial_records(
             db=db,
             user_uuid=user_uuid,
             processed_data=processed_data,
-            chunks_with_vectors=chunks_with_vectors,
             file_info=file_info
+        )
+        
+        # Step 3: Chunking and Embedding (now with the required warranty.id)
+        chunks_data = create_chunks_and_embeddings(raw_text, processed_data, warranty.id)
+
+        documents = [Document(page_content=chunk["text"], metadata=chunk["chunk_metadata"]) for chunk in chunks_data]
+        # Step 4: Add Documents to LangChain-Managed Vector Store
+        if documents:
+            embeddings = GoogleGenerativeAIEmbeddings(model=EMBEDDING_MODEL_NAME, google_api_key= GEMINI_API_KEY)
+            PGVector.from_documents(
+                embedding=embeddings,
+                documents=documents,
+                collection_name=str(warranty.id), # Use warranty.id as a unique collection name
+                connection=DATABASE_URL,
+            )
+            print(f"INFO: Added {len(documents)} chunks to vector store for warranty {warranty.id}")
+
+        # Step 5: Final Database Commits
+        db_ops.finalize_ingestion(
+            db=db,
+            warranty_id=warranty.id,
+            
         )
         
         return warranty.id, processed_data

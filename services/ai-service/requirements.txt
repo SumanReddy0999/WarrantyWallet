@@ -6,7 +6,7 @@ fastapi-cors
 
 # Database (PostgreSQL + pgvector)
 sqlalchemy
-psycopg2-binary
+psycopg[binary]
 pgvector
 
 # LangChain & Google Generative AI & LangSmith
@@ -15,8 +15,11 @@ langchain-core
 langchain-google-genai
 langchain-community
 langchain-text-splitters
+langChain-postgres
+langgraph
 langsmith
 google-generativeai
+
 
 # Configuration & Utilities
 python-dotenv
