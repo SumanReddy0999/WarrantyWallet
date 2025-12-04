@@ -21,18 +21,24 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
  * - Handles custom home navigation to reset URL params.
  * - Includes ARIA attributes for accessibility.
  */
-// Navigation link config for maintainability
-const navLinks: Array<{ label: string; to: string }> = [
+// Base navigation links that are always visible
+const baseNavLinks = [
   { label: 'Home', to: '/' },
   { label: 'Services', to: '/services' },
   { label: 'FAQs', to: '/faqs' },
   { label: 'Contact', to: '/contact' },
 ];
 
+// Protected navigation links that require authentication
+const protectedNavLinks = [
+  { label: 'Dashboard', to: '/dashboard' },
+  { label: 'My Warranties', to: '/warranties' },
+];
+
 export const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const isDashboard = location.pathname.startsWith('/dashboard');
 
   // Custom home navigation to reset URL params if already on home
@@ -63,7 +69,8 @@ export const Navigation = () => {
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8" role="navigation" aria-label="Main navigation">
-            {navLinks.map(link =>
+            {/* Base navigation links */}
+            {baseNavLinks.map(link =>
               link.label === 'Home' ? (
                 <div
                   key={link.label}
@@ -91,6 +98,20 @@ export const Navigation = () => {
                 </Link>
               )
             )}
+            
+            {/* Protected navigation links - only show when user is logged in */}
+            {user && protectedNavLinks.map(link => (
+              <Link
+                key={link.label}
+                to={link.to}
+                className={`text-gray-700 hover:text-blue-600 transition-colors ${
+                  location.pathname === link.to ? 'text-blue-600 font-medium' : ''
+                }`}
+                aria-current={location.pathname === link.to ? 'page' : undefined}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
           {/* Auth Buttons - Show login/signup when not logged in, user menu when logged in */}

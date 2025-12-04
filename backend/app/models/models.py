@@ -86,7 +86,7 @@ class Warranty(Base):
     expiry_date = Column(Date)
     retailer_name = Column(String)
     additional_metadata = Column(JSONB)
-    uploaded_at = Column(DateTime, server_default=func.now(), nullable=False)
+    uploaded_at = Column(DateTime,    server_default=func.now(), nullable=False)
 
     user = relationship("User", back_populates="warranties")
     product = relationship("Product", back_populates="warranties")

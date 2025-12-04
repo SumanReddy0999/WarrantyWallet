@@ -33,6 +33,7 @@ class Settings(BaseModel):
 
     # External Services
     OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
+    GEMINI_API_KEY: Optional[str] = os.getenv("GEMINI_API_KEY")
     
     # Email (if needed)
     SMTP_TLS: bool = True
@@ -44,8 +45,15 @@ class Settings(BaseModel):
     EMAILS_FROM_NAME: Optional[str] = None
     
     # File Storage
-    UPLOAD_FOLDER: str = os.path.join(os.path.dirname(__file__), "../../uploads")
+    UPLOAD_DIR: str = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "uploads")
     MAX_CONTENT_LENGTH: int = 16 * 1024 * 1024  # 16MB
+    ALLOWED_EXTENSIONS: set = {"pdf", "png", "jpg", "jpeg"}
+    
+    # Gemini AI
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    
+    # Application URLs
+    API_BASE_URL: str = os.getenv("API_BASE_URL", "http://localhost:8000")
     
     
     class Config:
@@ -57,6 +65,6 @@ class Settings(BaseModel):
 settings = Settings()
 
 # Ensure upload directory exists
-os.makedirs(settings.UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
 
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
@@ -6,6 +6,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Navigation } from '../components/Navigation';
 import { Shield, User, Mail, MapPin, Phone, Building, Lock } from 'lucide-react';
+import { API_BASE_URL } from '../config/api';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -43,7 +44,7 @@ const Signup = () => {
         throw new Error('Password must be at least 8 characters long');
       }
 
-      const response = await fetch('http://localhost:5000/auth/signup', {
+      const response = await fetch(`${API_BASE_URL}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

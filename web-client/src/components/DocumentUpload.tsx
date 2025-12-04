@@ -4,12 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { FileUp, Upload, FileText, Image } from 'lucide-react';
+import { API_BASE_URL } from '@/config/api';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface DocumentUploadProps {
   onUpload: (fileName: string) => void;
+  onUploadSuccess?: () => void;
 }
 
-export const DocumentUpload = ({ onUpload }: DocumentUploadProps) => {
+export const DocumentUpload = ({ onUpload, onUploadSuccess }: DocumentUploadProps) => {
+  const { getAuthHeader } = useAuth();
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -21,7 +25,7 @@ export const DocumentUpload = ({ onUpload }: DocumentUploadProps) => {
     try {
       // Create FormData for file upload
       const formData = new FormData();
-      formData.append('document', file);
+      formData.append('file', file);
 
       // Simulate progress during upload
       const progressInterval = setInterval(() => {
@@ -29,8 +33,12 @@ export const DocumentUpload = ({ onUpload }: DocumentUploadProps) => {
       }, 200);
 
       // Upload file to server
-      const response = await fetch('/api/documents/upload', {
+      const response = await fetch(`${API_BASE_URL}/warranties/upload/`, {
         method: 'POST',
+        headers: {
+          ...getAuthHeader(),
+          'Accept': 'application/json'
+        },
         body: formData,
       });
 
@@ -47,6 +55,9 @@ export const DocumentUpload = ({ onUpload }: DocumentUploadProps) => {
       setTimeout(() => {
         setIsProcessing(false);
         onUpload(result.document.originalName);
+        if (onUploadSuccess) {
+          onUploadSuccess();
+        }
       }, 500);
 
     } catch (error) {

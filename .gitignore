@@ -20,6 +20,85 @@ wheels/
 .installed.cfg
 *.egg
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+*.pyi
+*.pyo
+*.pth
+*.pyz
+*.pyw
+*.egg-info/
+*.egg
+.python-version
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+env/
+ENV/
+
+# Python byte-compiled / optimized / DLL files
+*.py[cod]
+*$py.class
+*.so
+
+# C extensions
+*.pyd
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
 # Virtual Environment
 .venv
 env/
@@ -36,7 +115,11 @@ ENV/
 
 # Node.js
 node_modules/
-npm-debug.log*
+.npm
+.eslintcache
+.npminstall-tmp
+.npmrc
+.pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnp.*
@@ -46,13 +129,89 @@ yarn-error.log*
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+.yarn/cache
+.yarn/install-state.gz
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+
+# Vite
+.temp/
+.cache/
+*.local
 
 # Environment variables
 .env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
 .env.local
+.env.development
+.env.test
+.env.production
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Local development
+*.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+*~
+
+# Build outputs
+build/
+dist/
+.next/
+out/
+.nuxt/
+.nuxt-proxy
+.serverless/
+.serverless_nextjs/
+.temp/
+.cache/
+.vercel
+.netlify
+
+# Local development
+*.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # Database
 *.sqlite3
@@ -92,12 +251,96 @@ coverage.xml
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/extensions.json
+
+# Python specific
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Database
+*.sqlite3
+*.db
+*.sql
+
+# Logs
+logs
+*.log
+
+# Build directories
+build/
+dist/
+
+# Coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
 
 # Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+[Dd]esktop.ini
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Project specific
+/backend/uploads/
+/backend/data/
+/backend/*.sqlite3
+/backend/*.db
+/web-client/.next/
+/web-client/out/
+/web-client/node_modules/
 
 # macOS
 .DS_Store

@@ -13,8 +13,16 @@ import Dashboard from "./pages/Dashboard";
 import ComingSoon from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import WarrantiesPage from "./pages/WarrantiesPage";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -29,6 +37,14 @@ const App = () => (
         <Route path="/faqs" element={<FAQs />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/coming-soon" element={<ComingSoon />} />
+        <Route 
+          path="/warranties" 
+          element={
+            <ProtectedRoute>
+              <WarrantiesPage />
+            </ProtectedRoute>
+          } 
+        />
         <Route 
           path="/dashboard" 
           element={

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Navigation } from '../components/Navigation';
+import { DocumentUpload } from '../components/DocumentUpload';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { FilePlus, MessageSquare, Bell, User, LogOut } from 'lucide-react';
@@ -14,6 +15,7 @@ import {
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const [showProfile, setShowProfile] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -117,10 +119,38 @@ const Dashboard = () => {
         </div>
 
         <div className="text-center">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+            <Button 
+              size="lg" 
+              className="bg-blue-600 hover:bg-blue-700"
+              onClick={() => setShowUploadModal(true)}
+            >
                 <FilePlus className="mr-2 h-5 w-5" /> Upload New Warranty
             </Button>
         </div>
+
+        {/* Document Upload Modal */}
+        {showUploadModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">Upload Warranty Document</h2>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => setShowUploadModal(false)}
+                >
+                  ✕
+                </Button>
+              </div>
+              <DocumentUpload 
+                onUpload={(fileName) => {
+                  console.log('File uploaded:', fileName);
+                }}
+                onUploadSuccess={() => setShowUploadModal(false)} 
+              />
+            </div>
+          </div>
+        )}
 
         {/* You would list the user's documents here in the future */}
         <div className="mt-10">

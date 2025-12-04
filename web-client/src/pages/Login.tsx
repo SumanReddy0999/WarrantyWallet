@@ -6,7 +6,8 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Navigation } from '../components/Navigation';
 import { Shield, Mail, Lock, ArrowRight } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext'; // 1. IMPORT THE AUTH HOOK
+import { useAuth } from '../contexts/AuthContext';
+import { API_BASE_URL } from '../config/api';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -30,7 +31,7 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -29,18 +29,16 @@ def get_db():
         db.close()
 
 def create_tables():
-    """Create all database tables"""
+    """Create all database tables if they don't exist"""
     # Create a new connection to avoid any transaction issues
     with engine.connect() as connection:
         # Start a new transaction
         trans = connection.begin()
         try:
-            # Drop all tables first (be careful with this in production!)
-            Base.metadata.drop_all(bind=connection)
-            # Create all tables
-            Base.metadata.create_all(bind=connection)
+            # Create all tables that don't exist
+            Base.metadata.create_all(bind=connection, checkfirst=True)
             trans.commit()
-            print("✅ Database tables created successfully")
+            print("✅ Database tables verified/created successfully")
         except Exception as e:
             trans.rollback()
             print(f"❌ Error creating database tables: {e}")
